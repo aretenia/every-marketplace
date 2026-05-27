@@ -157,6 +157,30 @@ defend against:
 These shape what "good" HTML looks like; the agent applies them per
 artifact based on content.
 
+### Readable measure, not full bleed
+
+Long-form text is unreadable at full viewport width — past ~80 characters
+per line the eye loses the return sweep and scanning slows. As a
+fallback-default (precedence tier 4, overridden by in-session direction or
+DESIGN.md), center the document in a content container and hold prose to a
+comfortable measure.
+
+- **Page container.** A centered column with a max-width in the ~820-960px
+  band (`margin-inline: auto`) keeps the doc off the far edges of wide
+  monitors while leaving room for the format's richer shapes.
+- **Prose measure.** Hold running paragraphs to roughly 65-80 characters
+  (`max-width: ~70ch` on text blocks). The named test: read a paragraph at
+  full window width on a wide display — if the return sweep to the next
+  line is effortful, the measure is too wide.
+- **Let wide content break out.** Tables, diagrams, and side-by-side
+  columns may use the full container width (or wider) when the content
+  needs it — the measure constraint is for prose, not for everything.
+
+Express the constraint in `ch`/`rem` rather than a single hardcoded pixel
+value so it survives font-size and DESIGN.md overrides. DESIGN.md or an
+in-session instruction overrides these values; this is the fallback when no
+layout preference exists.
+
 ### Markdown source is content, not design
 
 When markdown (or markdown-shaped chat context) is part of the input, use
@@ -267,7 +291,15 @@ contracts — the agent picks shapes that fit the content.
   primary always-visible surface; subsection labels (`<summary>`) are
   clickable affordances for readers to expand on demand. A single unit
   with no secondary content can skip `<details>` entirely; the rule
-  fires when content exists to hide.
+  fires when content exists to hide. The `<dl>` strip is for *descriptive*
+  fields (Goal, Files, Dependencies). A *directive* field — `Execution
+  note` is the canonical case, carrying a procedural instruction the
+  implementer must act on (e.g. "start with a failing integration test") —
+  does not belong in the strip, where it renders as a passive pair styled
+  like a date and gets skimmed past. Render it as an advisory callout (see
+  Tinted callout cards) so its visual weight matches its actionability. The
+  test: descriptive value -> metadata pair; something the reader must act
+  on -> callout.
 - **Key Technical Decisions** — repeating cards with the decision ID,
   bold decision title (often with inline code for technical
   identifiers), and prose rationale. Flat cards (not collapsibles) —
@@ -410,8 +442,8 @@ fine when the content suggests them.
 - **Side-by-side columns** for parallel content (Request / Response,
   Before / After, Two alternatives).
 - **Tinted callout cards** for content that is "different in kind"
-  (Deferred, Open Questions, advisory notes) — color-coded left
-  borders communicate kind at a glance.
+  (Deferred, Open Questions, advisory notes, unit-level execution notes)
+  — color-coded left borders communicate kind at a glance.
 
 ## Agent-consumability rules
 
