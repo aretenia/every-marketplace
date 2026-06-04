@@ -194,6 +194,14 @@ semantics so downstream tooling can rely on them:
 - **`deepened`** — ISO 8601 date marking the first time the confidence
   check substantively strengthened the plan. Presence affects Phase 0.1
   resume fast-path logic (see `references/deepening-workflow.md`).
+- **`execution`** — execution domain for downstream routing: `code`
+  (the default when absent) or `knowledge-work`. `ce-work`'s input triage
+  reads this: a plan marked `execution: knowledge-work` routes to the
+  non-code carve-out (read sources, synthesize, produce a deliverable —
+  skipping the branch/test/commit/CI lifecycle); absent or `code` routes
+  to the normal code path. Written by `ce-plan`'s approach-altitude flow
+  (`references/approach-altitude.md`) when a non-code deliverable is
+  persisted for execution.
 
 Field names are stable across plan revisions — never rename a field or
 repurpose its semantics. Agents composing new plans MUST use these exact
